@@ -19,7 +19,7 @@ OPTION (LEMON_OPT_MODULE_SOCKET "BSD Socket builtin library" ON)
 OPTION (LEMON_OPT_DYNAMIC "Build dynamic library" ON)
 OPTION (LEMON_OPT_STATIC_LIB "Build static library" ON)
 OPTION (LEMON_OPT_STATIC_LIBNAME "Add _static to static library" ON) # Recommended -;
-OPTION (LEMON_OPT_STATIC_LINK "Link lemon executable with static library" ON)
+OPTION (LEMON_OPT_STATIC_LINK "Link lemon executable with static library" OFF)
 
 IF (LEMON_OPT_STATIC_LINK)
   SET (LEMON_OPT_STATIC_LIB TRUE)
@@ -144,8 +144,8 @@ ENDIF ()
 #
 SET_TARGET_PROPERTIES(lemon
     PROPERTIES
-    VERSION       "$lemon_VERSION}"
-    SOVERSION     "$lemon_VERSION_MAJOR}"
+    VERSION    ${lemon_VERSION}
+    SOVERSION  ${lemon_VERSION_MAJOR}
     )
 
 #
