@@ -3,6 +3,7 @@
 #include "lmodule.h"
 #include "lstring.h"
 #include "linteger.h"
+#include "os.h"
 
 #include <time.h>
 #include <stdio.h>
