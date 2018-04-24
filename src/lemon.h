@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <lemon_export.h>
 
 #include "ltype.h"
 #include "lframe.h"
@@ -106,105 +107,140 @@ struct lemon {
 	struct lobject *l_iterator_string;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+LEMON_EXPORT
 struct lemon *
 lemon_create();
 
+LEMON_EXPORT
 void
 lemon_destroy(struct lemon *lemon);
 
+LEMON_EXPORT
 int
 lemon_compile(struct lemon *lemon);
 
+LEMON_EXPORT
 int
 lemon_input_set_file(struct lemon *lemon,
                      const char *filename);
 
+LEMON_EXPORT
 int
 lemon_input_set_buffer(struct lemon *lemon,
                        const char *filename,
                        char *buffer,
                        int length);
 
+LEMON_EXPORT
 void *
 lemon_allocator_alloc(struct lemon *lemon, long size);
 
+LEMON_EXPORT
 void
 lemon_allocator_free(struct lemon *lemon, void *ptr);
 
+LEMON_EXPORT
 void *
 lemon_allocator_realloc(struct lemon *lemon, void *ptr, long size);
 
+LEMON_EXPORT
 void
 lemon_mark_types(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_mark_errors(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_mark_strings(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lobject *
 lemon_get_type(struct lemon *lemon, lobject_method_t method);
 
+LEMON_EXPORT
 int
 lemon_add_type(struct lemon *lemon, struct ltype *type);
 
+LEMON_EXPORT
 void
 lemon_del_type(struct lemon *lemon, struct ltype *type);
 
+LEMON_EXPORT
 struct lobject *
 lemon_add_global(struct lemon *lemon, const char *name, void *object);
 
+LEMON_EXPORT
 void
 lemon_machine_reset(struct lemon *lemon);
 
+LEMON_EXPORT
 int
 lemon_machine_halted(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lobject *
 lemon_machine_throw(struct lemon *lemon,
                     struct lobject *lobject);
 
+LEMON_EXPORT
 int
 lemon_machine_get_pc(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_machine_set_pc(struct lemon *lemon, int pc);
 
+LEMON_EXPORT
 int
 lemon_machine_get_fp(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_machine_set_fp(struct lemon *lemon, int fp);
 
+LEMON_EXPORT
 int
 lemon_machine_get_sp(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_machine_set_sp(struct lemon *lemon, int sp);
 
 /*
  * first function frame's ra (machine->frame[1]->ra)
  */
+LEMON_EXPORT
 int
 lemon_machine_get_ra(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_machine_set_ra(struct lemon *lemon, int ra);
 
+LEMON_EXPORT
 struct lobject *
 lemon_machine_get_stack(struct lemon *lemon, int sp);
 
+LEMON_EXPORT
 struct lobject *
 lemon_machine_pop_object(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_machine_push_object(struct lemon *lemon,
                           struct lobject *object);
 
+LEMON_EXPORT
 struct lframe *
 lemon_machine_get_frame(struct lemon *lemon, int fp);
 
+LEMON_EXPORT
 void
 lemon_machine_set_frame(struct lemon *lemon, int fp, struct lframe *frame);
 
@@ -215,6 +251,7 @@ lemon_machine_set_frame(struct lemon *lemon, int fp, struct lframe *frame);
  *
  * use `lemon_machine_return_frame' when C function return
  */
+LEMON_EXPORT
 struct lframe *
 lemon_machine_push_new_frame(struct lemon *lemon,
                              struct lobject *self,
@@ -225,42 +262,53 @@ lemon_machine_push_new_frame(struct lemon *lemon,
 /*
  * pop out all top frame with callback
  */
+LEMON_EXPORT
 struct lobject *
 lemon_machine_return_frame(struct lemon *lemon,
                            struct lobject *retval);
 
+LEMON_EXPORT
 void
 lemon_machine_push_frame(struct lemon *lemon,
                          struct lframe *frame);
 
+LEMON_EXPORT
 struct lframe *
 lemon_machine_peek_frame(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lframe *
 lemon_machine_pop_frame(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_machine_store_frame(struct lemon *lemon,
                           struct lframe *frame);
 
+LEMON_EXPORT
 void
 lemon_machine_restore_frame(struct lemon *lemon,
                             struct lframe *frame);
 
+LEMON_EXPORT
 struct lframe *
 lemon_machine_add_pause(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lframe *
 lemon_machine_get_pause(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lframe *
 lemon_machine_set_pause(struct lemon *lemon,
                         struct lframe *frame);
 
+LEMON_EXPORT
 void
 lemon_machine_del_pause(struct lemon *lemon,
                         struct lframe *frame);
 
+LEMON_EXPORT
 struct lobject *
 lemon_machine_parse_args(struct lemon *lemon,
                          struct lobject *callee,
@@ -272,41 +320,55 @@ lemon_machine_parse_args(struct lemon *lemon,
                          int argc,
                          struct lobject *argv[]);
 
+LEMON_EXPORT
 int
 lemon_machine_execute(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lobject *
 lemon_machine_execute_loop(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_collector_enable(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_collector_disable(struct lemon *lemon);
 
+LEMON_EXPORT
 int
 lemon_collector_enabled(struct lemon *lemon);
 
+LEMON_EXPORT
 void
 lemon_collector_trace(struct lemon *lemon,
                       struct lobject *object);
 
+LEMON_EXPORT
 void
 lemon_collector_untrace(struct lemon *lemon,
                         struct lobject *object);
 
+LEMON_EXPORT
 void
 lemon_collector_mark(struct lemon *lemon,
                      struct lobject *object);
 
+LEMON_EXPORT
 void
 lemon_collector_barrier(struct lemon *lemon,
                         struct lobject *a,
                         struct lobject *b);
 
+LEMON_EXPORT
 void
 lemon_collector_barrierback(struct lemon *lemon,
                             struct lobject *a,
                             struct lobject *b);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LEMON_LEMON_H */

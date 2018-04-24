@@ -2,6 +2,7 @@
 #define LEMON_LFUNCTION_H
 
 #include "lobject.h"
+#include <lemon_export.h>
 
 struct lframe;
 
@@ -47,17 +48,24 @@ struct lfunction {
 	struct lobject *params[1]; /* parameters name reverse order */
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+LEMON_EXPORT
 void *
 lfunction_bind(struct lemon *lemon,
                struct lobject *function,
                struct lobject *self);
 
+LEMON_EXPORT
 void *
 lfunction_create(struct lemon *lemon,
                  struct lobject *name,
                  struct lobject *self,
                  lfunction_call_t callback);
 
+LEMON_EXPORT
 void *
 lfunction_create_with_address(struct lemon *lemon,
                               struct lobject *name,
@@ -68,7 +76,12 @@ lfunction_create_with_address(struct lemon *lemon,
                               int address,
                               struct lobject *params[]);
 
+LEMON_EXPORT
 struct ltype *
 lfunction_type_create(struct lemon *lemon);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LEMON_LFUNCTION_H */

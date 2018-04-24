@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 3.0.0 FATAL_ERROR)
-PROJECT (lemon VERSION 0.0.1 LANGUAGES C)
+PROJECT (lemon-lang VERSION 0.0.1 LANGUAGES C CXX)
 #
 # Policies
 # --------
@@ -13,34 +13,34 @@ ENDFOREACH ()
 #
 # Options
 # -------
-OPTION (LEMON_OPT_USE_MALLOC "stdlib's `malloc` ensure return aligned pointer" OFF)
-OPTION (LEMON_OPT_MODULE_OS "POSIX builtin os library" ON)
-OPTION (LEMON_OPT_MODULE_SOCKET "BSD Socket builtin library" ON)
-OPTION (LEMON_OPT_DYNAMIC "Build dynamic library" ON)
-OPTION (LEMON_OPT_STATIC_LIB "Build static library" ON)
-OPTION (LEMON_OPT_STATIC_LIBNAME "Add _static to static library" ON) # Recommended -;
-OPTION (LEMON_OPT_STATIC_LINK "Link lemon executable with static library" OFF)
+OPTION (LEMON_LANG_OPT_USE_MALLOC "stdlib's `malloc` ensure return aligned pointer" OFF)
+OPTION (LEMON_LANG_OPT_MODULE_OS "POSIX builtin os library" ON)
+OPTION (LEMON_LANG_OPT_MODULE_SOCKET "BSD Socket builtin library" ON)
+OPTION (LEMON_LANG_OPT_DYNAMIC "Build dynamic library" ON)
+OPTION (LEMON_LANG_OPT_STATIC_LIB "Build static library" ON)
+OPTION (LEMON_LANG_OPT_STATIC_LIBNAME "Add _static to static library" ON) # Recommended -;
+OPTION (LEMON_LANG_OPT_STATIC_LINK "Link lemon executable with static library" OFF)
 
-IF (LEMON_OPT_STATIC_LINK)
-  SET (LEMON_OPT_STATIC_LIB TRUE)
+IF (LEMON_LANG_OPT_STATIC_LINK)
+  SET (LEMON_LANG_OPT_STATIC_LIB TRUE)
 ENDIF ()
 
-IF (LEMON_OPT_USE_MALLOC)
+IF (LEMON_LANG_OPT_USE_MALLOC)
   ADD_DEFINITIONS(-DUSE_MALLOC)
 ENDIF ()
-IF (LEMON_OPT_MODULE_OS)
+IF (LEMON_LANG_OPT_MODULE_OS)
   ADD_DEFINITIONS(-DMODULE_OS)
 ENDIF ()
-IF (LEMON_OPT_MODULE_SOCKET)
+IF (LEMON_LANG_OPT_MODULE_SOCKET)
   ADD_DEFINITIONS(-DMODULE_SOCKET)
 ENDIF ()
-IF (LEMON_OPT_STATIC_LINK)
+IF (LEMON_LANG_OPT_STATIC_LINK)
   ADD_DEFINITIONS(-DSTATICLIB)
 ENDIF ()
 #
 # Sources
 # -------
-SET (LEMON_SRCS
+SET (LEMON_LANG_SRCS
   src/lemon.c
   src/hash.c
   src/shell.c
@@ -88,17 +88,16 @@ SET (LEMON_SRCS
   src/lcontinuation.c
   lib/builtin.c)
 
-IF (LEMON_OPT_MODULE_OS)
-  LIST (APPEND LEMON_SRCS lib/os.c)
+IF (LEMON_LANG_OPT_MODULE_OS)
+  LIST (APPEND LEMON_LANG_SRCS lib/os.c)
 ENDIF ()
-IF (LEMON_OPT_MODULE_SOCKET)
-  LIST (APPEND LEMON_SRCS lib/socket.c)
+IF (LEMON_LANG_OPT_MODULE_SOCKET)
+  LIST (APPEND LEMON_LANG_SRCS lib/socket.c)
 ENDIF ()
 #
 # Include directories
 # -------------------
 INCLUDE_DIRECTORIES(. src)
-
 #
 # Compiler settings
 # -----------------
@@ -113,10 +112,10 @@ INCLUDE (InstallRequiredSystemLibraries) # system libraries if needed
 #
 # Libraries
 # ---------
-ADD_LIBRARY (lemon_objects OBJECT ${LEMON_SRCS})
+ADD_LIBRARY (lemon_objects OBJECT ${LEMON_LANG_SRCS})
 ADD_LIBRARY (lemon SHARED $<TARGET_OBJECTS:lemon_objects>)
-IF (LEMON_OPT_STATIC_LIB)
-  IF (LEMON_OPT_STATIC_LIBNAME)
+IF (LEMON_LANG_OPT_STATIC_LIB)
+  IF (LEMON_LANG_OPT_STATIC_LIBNAME)
     ADD_LIBRARY (lemon_static STATIC $<TARGET_OBJECTS:lemon_objects>)
   ELSE ()
     ADD_LIBRARY (lemon STATIC $<TARGET_OBJECTS:lemon_objects>)
@@ -131,29 +130,35 @@ IF (UNIX)
 ENDIF ()
 IF (NOT ("${CMAKE_DL_LIBS}" STREQUAL ""))
   TARGET_LINK_LIBRARIES(lemon PUBLIC ${CMAKE_DL_LIBS} ${CMAKE_M_LIBS})
-  IF (LEMON_OPT_STATIC_LIB)
+  IF (LEMON_LANG_OPT_STATIC_LIB)
     TARGET_LINK_LIBRARIES(lemon_static PUBLIC ${CMAKE_DL_LIBS} ${CMAKE_M_LIBS})
   ENDIF ()
 ENDIF ()
 IF (UNIX)
   TARGET_LINK_LIBRARIES(lemon PUBLIC m)
 ENDIF ()
-
 #
-# Versioning
+# Export definition
+#
+INCLUDE (GenerateExportHeader)
+GENERATE_EXPORT_HEADER(lemon
+  EXPORT_FILE_NAME "src/lemon_export.h"
+  )
+ADD_DEFINITIONS(-Dlemon_EXPORTS)
+#
+# Target properties
 #
 SET_TARGET_PROPERTIES(lemon
-    PROPERTIES
-    VERSION    ${lemon_VERSION}
-    SOVERSION  ${lemon_VERSION_MAJOR}
-    )
-
+  PROPERTIES
+  VERSION    ${lemon_VERSION}
+  SOVERSION  ${lemon_VERSION_MAJOR}
+  )
 #
 # Executables
 # -----------
 ADD_EXECUTABLE(lemon_executable src/main.c)
 SET_TARGET_PROPERTIES(lemon_executable PROPERTIES OUTPUT_NAME "lemon")
-IF (LEMON_OPT_STATIC_LINK)
+IF (LEMON_LANG_OPT_STATIC_LINK)
   TARGET_LINK_LIBRARIES(lemon_executable PUBLIC lemon_static)
 ELSE ()
   TARGET_LINK_LIBRARIES(lemon_executable PUBLIC lemon)

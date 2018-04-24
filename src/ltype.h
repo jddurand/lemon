@@ -2,6 +2,7 @@
 #define LEMON_LTYPE_H
 
 #include "lobject.h"
+#include <lemon_export.h>
 
 /*
  * three methods:
@@ -17,13 +18,23 @@ struct ltype {
 	lobject_method_t type_method; /* method of type   */
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+LEMON_EXPORT
 void *
 ltype_create(struct lemon *lemon,
              const char *name,
              lobject_method_t method,
              lobject_method_t type_method);
 
+LEMON_EXPORT
 struct ltype *
 ltype_type_create(struct lemon *lemon);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LEMON_LTYPE_H */

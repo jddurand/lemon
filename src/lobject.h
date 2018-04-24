@@ -1,6 +1,8 @@
 #ifndef LEMON_LOBJECT_H
 #define LEMON_LOBJECT_H
 
+#include <lemon_export.h>
+
 struct lemon;
 struct ltype;
 
@@ -129,13 +131,19 @@ struct lobject {
  *
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * if `type' is not NULL, `method' will be discard,
  * object will use type->method instead (for dynamic library type stability).
  */
+LEMON_EXPORT
 void *
 lobject_create(struct lemon *lemon, size_t size, lobject_method_t method);
 
+LEMON_EXPORT
 int
 lobject_destroy(struct lemon *lemon, struct lobject *object);
 
@@ -143,96 +151,118 @@ lobject_destroy(struct lemon *lemon, struct lobject *object);
  * copy object if size > sizeof(struct lobject)
  * memcpy object may cause gc dead loop
  */
+LEMON_EXPORT
 void
 lobject_copy(struct lemon *lemon,
              struct lobject *newobject,
              struct lobject *oldobject,
              size_t size);
 
+LEMON_EXPORT
 struct lobject *
 lobject_eq(struct lemon *lemon, struct lobject *a, struct lobject *b);
 
+LEMON_EXPORT
 struct lobject *
 lobject_unop(struct lemon *lemon, int method, struct lobject *a);
 
+LEMON_EXPORT
 struct lobject *
 lobject_binop(struct lemon *lemon,
               int method, struct lobject *a, struct lobject *b);
 
+LEMON_EXPORT
 struct lobject *
 lobject_mark(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_string(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_length(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_integer(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_boolean(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_call(struct lemon *lemon,
              struct lobject *self,
              int argc, struct lobject *argv[]);
 
+LEMON_EXPORT
 struct lobject *
 lobject_all_item(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_map_item(struct lemon *lemon, struct lobject *self);
 
+LEMON_EXPORT
 struct lobject *
 lobject_get_item(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_has_item(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_set_item(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name,
                  struct lobject *value);
 
+LEMON_EXPORT
 struct lobject *
 lobject_del_item(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_add_attr(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name,
                  struct lobject *value);
 
+LEMON_EXPORT
 struct lobject *
 lobject_get_attr(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_set_attr(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name,
                  struct lobject *value);
 
+LEMON_EXPORT
 struct lobject *
 lobject_del_attr(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_has_attr(struct lemon *lemon,
                  struct lobject *self,
                  struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_get_slice(struct lemon *lemon,
                   struct lobject *self,
@@ -240,6 +270,7 @@ lobject_get_slice(struct lemon *lemon,
                   struct lobject *stop,
                   struct lobject *step);
 
+LEMON_EXPORT
 struct lobject *
 lobject_set_slice(struct lemon *lemon,
                   struct lobject *self,
@@ -248,6 +279,7 @@ lobject_set_slice(struct lemon *lemon,
                   struct lobject *step,
                   struct lobject *value);
 
+LEMON_EXPORT
 struct lobject *
 lobject_del_slice(struct lemon *lemon,
                   struct lobject *self,
@@ -255,123 +287,160 @@ lobject_del_slice(struct lemon *lemon,
                   struct lobject *stop,
                   struct lobject *step);
 
+LEMON_EXPORT
 struct lobject *
 lobject_get_getter(struct lemon *lemon,
                    struct lobject *self,
                    struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_get_setter(struct lemon *lemon,
                    struct lobject *self,
                    struct lobject *name);
 
+LEMON_EXPORT
 struct lobject *
 lobject_call_attr(struct lemon *lemon,
                   struct lobject *self,
                   struct lobject *name,
                   int argc, struct lobject *argv[]);
 
+LEMON_EXPORT
 int
 lobject_is_integer(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_pointer(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_type(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_karg(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_varg(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_vkarg(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_class(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_array(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_number(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_double(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_string(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_iterator(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_instance(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_function(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_coroutine(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_exception(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_dictionary(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_error(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 int
 lobject_is_equal(struct lemon *lemon, struct lobject *a, struct lobject *b);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error(struct lemon *lemon, struct lobject *self, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_type(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_item(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_memory(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_runtime(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_argument(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_attribute(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_error_arithmetic(struct lemon *lemon, const char *fmt, ...);
 
+LEMON_EXPORT
 void *
 lobject_error_not_callable(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 void *
 lobject_error_not_iterable(struct lemon *lemon, struct lobject *object);
 
+LEMON_EXPORT
 void *
 lobject_error_not_implemented(struct lemon *lemon);
 
+LEMON_EXPORT
 struct lobject *
 lobject_throw(struct lemon *lemon, struct lobject *error);
 
+LEMON_EXPORT
 void
 lobject_print(struct lemon *lemon, ...);
 
+LEMON_EXPORT
 struct lobject *
 lobject_method_call(struct lemon *lemon,
                     struct lobject *self,
                     int method, int argc, struct lobject *argv[]);
 
+LEMON_EXPORT
 struct lobject *
 lobject_default(struct lemon *lemon,
                 struct lobject *self,
@@ -383,9 +452,14 @@ lobject_default(struct lemon *lemon,
  * `lobject_length' -> `__length__()'
  *  ...
  */
+LEMON_EXPORT
 struct lobject *
 lobject_default_get_attr(struct lemon *lemon,
                          struct lobject *self,
                          struct lobject *name);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LEMON_LOBJECT_H */
