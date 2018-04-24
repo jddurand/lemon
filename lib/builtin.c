@@ -4,6 +4,7 @@
 #include "lstring.h"
 #include "linteger.h"
 #include "literator.h"
+#include "builtin.h"
 
 #include <stdio.h>
 #include <string.h>
