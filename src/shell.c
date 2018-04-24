@@ -9,6 +9,7 @@
 #include "machine.h"
 #include "generator.h"
 #include "ltable.h"
+#include "shell.h"
 
 #include <string.h>
 
