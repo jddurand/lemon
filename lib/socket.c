@@ -5,6 +5,7 @@
 #include "lstring.h"
 #include "linteger.h"
 #include "lfunction.h"
+#include "socket.h"
 
 #include <stdio.h>
 #include <string.h>
