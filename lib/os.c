@@ -9,15 +9,19 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#ifndef WINDOWS
 #include <unistd.h>
+#endif
 #include <limits.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 
 #ifdef WINDOWS
 #include <windows.h>
 #include <winsock2.h>
+#include <io.h>
 #else
 #include <sys/select.h>
 #endif
@@ -321,7 +325,7 @@ os_time(struct lemon *lemon, struct lobject *self, int argc, struct lobject *arg
 
 	time(&t);
 
-	return linteger_create_from_long(lemon, t);
+	return linteger_create_from_long(lemon, (long) t);
 }
 
 static struct lobject *

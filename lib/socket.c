@@ -9,7 +9,9 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifndef WINDOWS
 #include <unistd.h>
+#endif
 
 #ifdef WINDOWS
 #ifndef _WIN32_WINNT
@@ -155,7 +157,7 @@ socket_connect(struct lemon *lemon, struct lobject *self, int argc, struct lobje
 
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(port);
+	addr.sin_port = htons((unsigned short) port);
 	addr.sin_addr.s_addr = inet_addr(host);
 
 	fd = linteger_to_long(lemon, argv[0]);

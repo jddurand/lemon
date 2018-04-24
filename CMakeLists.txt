@@ -108,7 +108,8 @@ IF (WIN32 AND NOT CYGWIN)
   ADD_DEFINITIONS("-DWINDOWS")
   ADD_DEFINITIONS("-DPATH_MAX=260")
   ADD_DEFINITIONS("-Dsnprintf=_snprintf")
-  FOREACH (_definition WIN32_LEAN_AND_MEAN _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_DEPRECATE)
+  ADD_DEFINITIONS("-Dopen=_open")
+  FOREACH (_definition WIN32_LEAN_AND_MEAN _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_DEPRECATE _WINSOCK_DEPRECATED_NO_WARNINGS)
     ADD_DEFINITIONS("-D${_definition}")
   ENDFOREACH ()
 ENDIF ()
@@ -131,7 +132,7 @@ IF (OPT_BUILD_STATIC_LIB)
 ENDIF ()
 SET (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #
-# Implicit dependencies on dl, m
+# Implicit dependencies on dl, m, socket
 #
 IF (UNIX)
   SET (CMAKE_M_LIBS m)
@@ -141,6 +142,20 @@ IF ((NOT ("${CMAKE_DL_LIBS}" STREQUAL "")) OR (NOT ("${CMAKE_M_LIBS}" STREQUAL "
   IF (OPT_BUILD_STATIC_LIB)
     TARGET_LINK_LIBRARIES(lemon_static PUBLIC ${CMAKE_DL_LIBS} ${CMAKE_M_LIBS})
   ENDIF ()
+ENDIF ()
+IF (WIN32 AND NOT CYGWIN)
+  IF (OPT_BUILD_MODULE_SOCKET)
+    #
+    # Socket functions
+    #
+    TARGET_LINK_LIBRARIES(lemon wsock32 ws2_32)
+    TARGET_LINK_LIBRARIES(lemon_static wsock32 ws2_32)
+  ENDIF ()
+  #
+  # PathFileExists
+  #
+  TARGET_LINK_LIBRARIES(lemon shlwapi)
+  TARGET_LINK_LIBRARIES(lemon_static shlwapi)
 ENDIF ()
 #
 # Export definition
