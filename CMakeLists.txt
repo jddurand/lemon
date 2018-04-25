@@ -187,8 +187,8 @@ ENDIF ()
 # Enable Testing
 # --------------
 ENABLE_TESTING()
-ADD_TEST(ctest_build_lemon_executable "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target lemon_executable)
-ADD_TEST(test ${CMAKE_COMMAND} -E env "$<TARGET_FILE:lemon_executable>" test/test.lm)
-ADD_TEST(test_hello_world ${CMAKE_COMMAND} -E env "$<TARGET_FILE:lemon_executable>" test/test_helloworld.lm)
-SET_TESTS_PROPERTIES (test PROPERTIES DEPENDS ctest_build_lemon_executable)
-SET_TESTS_PROPERTIES (test_hello_world PROPERTIES DEPENDS ctest_build_lemon_executable)
+ADD_TEST(NAME build_executable COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target lemon_executable)
+ADD_TEST(NAME test             COMMAND ${CMAKE_COMMAND} -DEXE_LOCATION=$<TARGET_FILE:lemon_executable> -E ${EXE_LOCATION} test/test.lm)
+ADD_TEST(NAME test_hello_world COMMAND ${CMAKE_COMMAND} -DEXE_LOCATION=$<TARGET_FILE:lemon_executable> -E ${EXE_LOCATION} test/test_helloworld.lm)
+SET_TESTS_PROPERTIES (test PROPERTIES DEPENDS build_executable)
+SET_TESTS_PROPERTIES (test_hello_world PROPERTIES DEPENDS build_executable)
